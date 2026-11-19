@@ -1,0 +1,21 @@
+PACKAGING / PREPARING A USB
+===========================
+Prepare a drive:
+  1. Copy the whole USB_SUBTITLE folder and an (empty) MOVIES folder to the USB root.
+     Do not rename USB_SUBTITLE. (Folder USB/ must contain USB_SUBTITLE/ and MOVIES/.)
+  2. Run a launcher once on any computer with internet (installs dependencies, caches the model).
+  3. Optional portable models: set "model_location":"portable" and run  <launcher> download-model.
+
+Developing / tests:
+  python -m venv venv && venv/bin/pip install -r USB_SUBTITLE/app/requirements-dev.txt
+  cd USB_SUBTITLE/app && python -m pytest -q       (FFmpeg-dependent tests are skipped if FFmpeg is missing)
+
+Build a distributable archive (zip, no virtualenv, no models, no user data):
+  cd USB && zip -r USB_SUBTITLE.zip MOVIES USB_SUBTITLE -x "*/__pycache__/*" "*/.pytest_cache/*" \
+     "USB_SUBTITLE/database/*" "USB_SUBTITLE/logs/*" "USB_SUBTITLE/temp/*" "USB_SUBTITLE/models/*"
+  (Windows: right-click the two folders > Send to > Compressed folder.)
+
+Why no single executable: a PyInstaller .exe only runs on the OS it was built on and would bundle
+hundreds of MB; Python + launchers keep the USB light and work on all three systems. If you want a
+Windows-only .exe later:  pip install pyinstaller && pyinstaller -F -n usb_subtitle app/usb_subtitle/__main__.py
+(must still be run from the USB so root detection works; build separately per OS).

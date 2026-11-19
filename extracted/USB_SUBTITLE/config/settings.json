@@ -1,0 +1,21 @@
+{
+  "movies_folder": "MOVIES",
+  "model": "tiny",
+  "device": "cpu",
+  "compute_type": "int8",
+  "cpu_threads": 0,
+  "output_language": "en",
+  "beam_size": 1,
+  "vad_filter": true,
+  "audio_track": 0,
+  "chunk_minutes": 10,
+  "scan_interval_seconds": 10,
+  "stable_seconds": 20,
+  "max_attempts": 2,
+  "overwrite_existing": false,
+  "utf8_bom": false,
+  "model_location": "host",
+  "allow_model_download": true,
+  "temp_location": "host",
+  "video_extensions": [".mp4", ".mkv", ".avi", ".mov", ".webm"]
+}

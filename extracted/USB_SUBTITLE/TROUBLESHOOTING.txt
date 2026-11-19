@@ -1,0 +1,28 @@
+TROUBLESHOOTING
+===============
+First, run:  <launcher> check     (shows Python, RAM, drive type, FFmpeg, model status, USB writable)
+
+"Python not found"            Install Python 3.9+ (see README). On Windows tick "Add python.exe to PATH".
+"venv failed" (Linux)         sudo apt install python3-venv
+"Dependency install failed"   Needs internet once per computer. Check proxy/firewall; re-run the launcher.
+"FFmpeg not found"            Re-run the launcher (installs imageio-ffmpeg) or install FFmpeg on PATH.
+"Model not cached..."         Connect to the internet once and run:  <launcher> download-model
+                              (or use portable-model mode, see README).
+Nothing happens when I copy   Files wait until size is unchanged for 20 s. Check extension is
+                              .mp4 .mkv .avi .mov .webm. Check the folder is USB/MOVIES (or 'folder <name>').
+                              Hidden files and *.usbsub-part files are ignored on purpose.
+"unreadable or incomplete"    File is damaged or the copy was interrupted. Re-copy it, then type  retry.
+"video has no audio track"    Nothing to transcribe. Failed jobs are listed by  status.
+"no speech detected"          Silent film or music only; no subtitle is written.
+Wrong language / bad text     Use a bigger model:  model base  (or small), delete the .srt, wait for the rescan.
+                              For multi-audio files set "audio_track" (0,1,...) in settings.json.
+Subtitle not shown on TV      Same base name as the video? Enable subtitles in the TV menu. Try the
+                              "utf8_bom": true setting. Try renaming the video without special characters.
+                              Some TVs cannot read exFAT/NTFS or MKV subtitles - see your TV manual.
+USB removed during a job      Plug it back; the job restarts automatically (or on next launch).
+Slow / computer sluggish      Keep model 'tiny', set "cpu_threads" lower, close other programs.
+Settings broken               If settings.json is invalid it is backed up (.bad-<time>) and defaults are loaded.
+Logs                          USB_SUBTITLE/logs/application.log, or type  logs.
+macOS "cannot be opened"      Right-click start_macos.command > Open (first time), or: chmod +x start_macos.command
+macOS/Linux "Permission denied" on the .sh   FAT/exFAT drives do not keep the executable bit. Run:
+                              bash start_linux.sh      (or bash start_macos.command)
