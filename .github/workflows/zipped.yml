@@ -1,42 +1,39 @@
-name: Extract ZIP and Commit
+name: Extract Root ZIP and Commit
 
 on:
   push:
     paths:
-      - 'uploads/*.zip'
-  workflow_dispatch: # Allows manual runs from the GitHub Actions tab
+      - '*.zip' # Watches for any .zip added or updated in the root folder
+  workflow_dispatch: # Allows you to trigger it manually right now
 
 permissions:
-  contents: write # Required so the workflow can push commits back to the repo
+  contents: write
 
 jobs:
   extract-and-commit:
     runs-on: ubuntu-latest
 
     steps:
-      # 1. Fetch repository files
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      # 2. Extract the ZIP archive(s)
-      - name: Extract ZIP contents
+      - name: Extract ZIP contents from root
         run: |
           mkdir -p extracted
-          for file in uploads/*.zip; do
+          for file in *.zip; do
             [ -e "$file" ] || continue
+            echo "Extracting $file..."
             unzip -o "$file" -d extracted/
           done
 
-      # 3. Configure Git, stage extracted files, and push
       - name: Commit and push extracted files
         run: |
           git config --local user.name "github-actions[bot]"
-          git config --local user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git config --local user.email "41898282+github-actions[bot]@://github.com"
           git add extracted/
           
-          # Only commit if there are new or modified files to avoid workflow failure
           if ! git diff --staged --quiet; then
-            git commit -m "Extract ZIP contents"
+            git commit -m "Extract root ZIP contents"
             git push
           else
             echo "No new changes to commit."
